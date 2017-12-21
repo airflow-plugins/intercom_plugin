@@ -13,6 +13,7 @@ class IntercomToS3Operator(BaseOperator):
     """
     Make a query against Intercom and write the resulting data to s3.
     """
+    template_field = ('s3_key', )
 
     @apply_defaults
     def __init__(
@@ -23,7 +24,6 @@ class IntercomToS3Operator(BaseOperator):
             s3_conn_id='',
             s3_bucket='',
             s3_key='',
-            output='',
             fields=None,
             replication_key_name=None,
             replication_key_value=0,
@@ -39,9 +39,7 @@ class IntercomToS3Operator(BaseOperator):
         :param s3_conn_id:              name of the Airflow connection that has
                                         your Amazon S3 conection params
         :param s3_bucket:               name of the destination S3 bucket
-        :param s3_key:                  name of the destination file from bucket                            
-        :param output:                  name of the temporary file where the results
-                                        should be saved
+        :param s3_key:                  name of the destination file from bucket
         :param fields:                  *(optional)* list of fields that you want
                                         to get from the object.
                                         If *None*, then this will get all fields
@@ -68,7 +66,6 @@ class IntercomToS3Operator(BaseOperator):
         self.s3_conn_id = s3_conn_id
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
-        self.output = output
 
         self.fields = fields
         self.replication_key_name = replication_key_name
@@ -147,7 +144,7 @@ class IntercomToS3Operator(BaseOperator):
             dest_s3 = S3Hook(s3_conn_id=self.s3_conn_id)
             dest_s3.load_file(
                 filename=tmp.name,
-                key=self.output,
+                key=self.s3_key,
                 bucket_name=self.s3_bucket,
                 replace=True
 
