@@ -12,6 +12,8 @@ class IntercomHook(BaseHook):
         self._args = args
         self._kwargs = kwargs
 
+        self.connection = None
+        self.extras = None
         self.intercom = None
 
     def get_conn(self):
