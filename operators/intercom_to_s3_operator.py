@@ -8,7 +8,6 @@ from intercom_plugin.hooks.intercom_hook import IntercomHook
 from tempfile import NamedTemporaryFile
 
 
-# TODO: Inherit from BaseOperator
 class IntercomToS3Operator(BaseOperator):
     """
     Make a query against Intercom and write the resulting data to s3.
@@ -58,7 +57,6 @@ class IntercomToS3Operator(BaseOperator):
 
         super().__init__(*args, **kwargs)
 
-        # TODO: update with get_conn(intercom_conn_id)
         self.intercom_conn_id = intercom_conn_id
         self.intercom_obj = intercom_obj
         self.intercom_method = intercom_method
